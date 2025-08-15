@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caminho de Aprendizagem Musical</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+
+        .path-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .path-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: #e5e7eb;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+        
+        .path-step:nth-child(odd) {
+            align-self: flex-start;
+        }
+        
+        .path-step:nth-child(even) {
+            align-self: flex-end;
+        }
+
+        .path-step:nth-child(odd) .path-card {
+            margin-right: 1.5rem;
+        }
+
+        .path-step:nth-child(even) .path-card {
+            margin-left: 1.5rem;
+        }
+
+        .tab-button.active {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1-px rgba(0, 0, 0, 0.06);
+            color: white;
+        }
+        .tab-button.active.teclado-active { background-color: #4f46e5; }
+        .tab-button.active.baixo-active { background-color: #10b981; }
+        .tab-button.active.guitarra-active { background-color: #ef4444; }
+        .tab-button.active.bateria-active { background-color: #f97316; }
+        .tab-button.active.sonorizacao-active { background-color: #a855f7; }
+
+        .path-step .path-card .path-icon {
+            color: white;
+            padding: 0.75rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: 700;
+        }
+        .path-step:nth-child(odd) .path-card .path-icon { left: 100%; margin-left: -1.5rem;}
+        .path-step:nth-child(even) .path-card .path-icon { right: 100%; margin-right: -1.5rem;}
+        
+        .path-step.teclado .path-card .path-icon { background-color: #4f46e5; }
+        .path-step.baixo .path-card .path-icon { background-color: #10b981; }
+        .path-step.guitarra .path-card .path-icon { background-color: #ef4444; }
+        .path-step.bateria .path-card .path-icon { background-color: #f97316; }
+        .path-step.sonorizacao .path-card .path-icon { background-color: #a855f7; }
+
+        .path-step .path-card h3 { color: #4f46e5; }
+        .path-step.baixo .path-card h3 { color: #10b981; }
+        .path-step.guitarra .path-card h3 { color: #ef4444; }
+        .path-step.bateria .path-card h3 { color: #f97316; }
+        .path-step.sonorizacao .path-card h3 { color: #a855f7; }
+        .path-step .path-card h3 {
+            line-height: 1.25;
+        }
+
+        /* Progress Bar Styles */
+        .progress-bar-container {
+            width: 100%;
+            height: 10px;
+            background-color: #e5e7eb;
+            border-radius: 9999px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0;
+            background-color: #4f46e5; /* Default color for teclado */
+            transition: width 0.5s ease-in-out;
+        }
+
+        .teclado .progress-fill { background-color: #4f46e5; }
+        .baixo .progress-fill { background-color: #10b981; }
+        .guitarra .progress-fill { background-color: #ef4444; }
+        .bateria .progress-fill { background-color: #f97316; }
+        .sonorizacao .progress-fill { background-color: #a855f7; }
+
+        .comparison-progress-container {
+            margin-top: 0.75rem;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 0.75rem;
+        }
+        .student-progress {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.125rem; /* Diminuição da margem inferior */
+        }
+        .student-progress-name {
+            font-size: 0.875rem;
+            font-weight: 500;
+            width: 80px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        .student-progress-bar-container {
+            flex-grow: 1;
+            height: 8px;
+            background-color: #e5e7eb;
+            border-radius: 9999px;
+            overflow: hidden;
+            margin-left: 0.5rem;
+            margin-right: 0.5rem;
+        }
+        .student-progress-bar-fill {
+            height: 100%;
+            transition: width 0.5s ease-in-out;
+        }
+        .student-progress-percentage {
+            font-size: 0.75rem;
+            color: #4b5563;
+            width: 30px;
+            text-align: right;
+        }
+        
+        /* Mobile-first adjustments */
+        @media (max-width: 768px) {
+            .path-line {
+                left: 1rem;
+                transform: none;
+            }
+
+            .path-step {
+                align-self: flex-start !important;
+                width: 100%;
+            }
+            
+            .path-step .path-card {
+                margin-left: 3rem !important;
+                margin-right: 0 !important;
+            }
+            .path-step .path-card .path-icon {
+                left: -3rem;
+                right: auto;
+            }
+            
+            .tab-button {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.875rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white rounded-3xl shadow-xl max-w-4xl w-full p-8 md:p-12">
+        
+        <h1 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-8 md:mb-12">
+            Caminho de Aprendizagem Musical
+        </h1>
+
+        <!-- Navigation Menu -->
+        <div class="flex flex-wrap justify-center gap-2 md:gap-4 mb-8 md:mb-12">
+            <button class="tab-button bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-full transition-all hover:bg-gray-300 focus:outline-none" data-tab="teclado">
+                Teclado
+            </button>
+            <button class="tab-button bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-full transition-all hover:bg-gray-300 focus:outline-none" data-tab="baixo">
+                Baixo
+            </button>
+            <button class="tab-button bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-full transition-all hover:bg-gray-300 focus:outline-none" data-tab="guitarra">
+                Guitarra
+            </button>
+            <button class="tab-button bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-full transition-all hover:bg-gray-300 focus:outline-none" data-tab="bateria">
+                Bateria
+            </button>
+            <button class="tab-button bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-full transition-all hover:bg-gray-300 focus:outline-none" data-tab="sonorizacao">
+                Sonorização
+            </button>
+        </div>
+
+        <!-- Content Sections -->
+        <div id="teclado-content" class="tab-content hidden">
+            <h1 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-8 md:mb-12">
+                Caminho de Aprendizagem - Teclado
+            </h1>
+            <div id="teclado-path" class="path-container">
+                <div class="path-line hidden md:block"></div>
+                <!-- Steps will be dynamically generated by JS -->
+            </div>
+        </div>
+
+        <div id="baixo-content" class="tab-content hidden">
+            <h1 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-8 md:mb-12">
+                Caminho de Aprendizagem - Baixo
+            </h1>
+            <div id="baixo-path" class="path-container">
+                <div class="path-line hidden md:block"></div>
+                 <!-- Steps will be dynamically generated by JS -->
+            </div>
+        </div>
+
+        <div id="guitarra-content" class="tab-content hidden">
+            <h1 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-8 md:mb-12">
+                Caminho de Aprendizagem - Guitarra
+            </h1>
+            <div id="guitarra-path" class="path-container">
+                <div class="path-line hidden md:block"></div>
+                <!-- Steps will be dynamically generated by JS -->
+            </div>
+        </div>
+
+        <div id="bateria-content" class="tab-content hidden">
+            <h1 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-8 md:mb-12">
+                Caminho de Aprendizagem - Bateria
+            </h1>
+            <div id="bateria-path" class="path-container">
+                <div class="path-line hidden md:block"></div>
+                <!-- Steps will be dynamically generated by JS -->
+            </div>
+        </div>
+
+        <div id="sonorizacao-content" class="tab-content hidden">
+            <h1 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-8 md:mb-12">
+                Caminho de Aprendizagem - Sonorização
+            </h1>
+            <div id="sonorizacao-path" class="path-container">
+                <div class="path-line hidden md:block"></div>
+                <!-- Steps will be dynamically generated by JS -->
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            let currentTab = 'teclado';
+
+            const studentData = {
+                teclado: {
+                    'rian': [100, 40, 5, 0, 0, 0, 0, 0, 0, 0, 0],
+                    'rhaniely': [100, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    'felipe': [100, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                },
+                baixo: {
+                    'acacio': [100, 70, 50, 40, 20, 0, 0, 0, 0, 0, 0],
+                    'leonardo': [100, 50, 10, 5, 5, 0, 0, 0, 0, 0, 0]
+                },
+                guitarra: {
+                    'thiago': [100, 40, 5, 0, 0, 0, 0, 0, 0, 0]
+                },
+                bateria: {
+                    'fabio': [100, 70, 40, 2, 2, 0, 0, 0, 0],
+                    'wesley': [100, 50, 25, 1, 0, 0, 0, 0, 0],
+                    'rhaniel': [100, 100, 80, 60, 60, 20, 0, 0, 0]
+                },
+                sonorizacao: {
+                    'rian': [100, 60, 5, 0, 0, 0, 0, 0],
+                    'felipe': [100, 30, 0, 0, 0, 0, 0, 0]
+                }
+            };
+
+            const stepTitles = {
+                teclado: [
+                    'I. Introdução', 'II. Fundamentos', 'III. Juntando os Fundamentos', 'IV. Regras da Música',
+                    'V. Coordenação das Mãos', 'VI. Acompanhamento', 'VII. Aprofundando a Teoria',
+                    'VIII. Inversão de Acordes e Aplicação', 'IX. Tocando com Segurança',
+                    'X. Tocar em Qualquer Tom', 'XI. Tocar de Ouvido'
+                ],
+                baixo: [
+                    'I. Introdução', 'II. Fundamentos', 'III. Juntando os Fundamentos', 'IV. Regras da Música',
+                    'V. Coordenação das Mãos', 'VI. Acompanhamento (Levadas)', 'VII. Aprofundando a Teoria',
+                    'VIII. Aplicação de Escalas e Campo Harmônico', 'IX. Tocando com Segurança',
+                    'X. Tocar em Qualquer Tom', 'XI. Tocar de Ouvido'
+                ],
+                guitarra: [
+                    'I. Introdução', 'II. Fundamentos', 'III. Ritmo e Trocas', 'IV. Acompanhamento',
+                    'V. Aprofundando a Teoria', 'VI. Variações de Acordes', 'VII. Aplicação Harmônica',
+                    'VIII. Tocando com Segurança', 'IX. Tocar em Qualquer Tom', 'X. Tocar de Ouvido'
+                ],
+                bateria: [
+                    'I. Introdução', 'II. Fundamentos', 'III. Viradas e Componentes', 'IV. Acompanhamento Rítmico',
+                    'V. Tocar em Grupo', 'VI. Tocar com Segurança e Musicalidade', 'VII. Improvisação',
+                    'VIII. Variedades Rítmicas', 'IX. Criatividade'
+                ],
+                sonorizacao: [
+                    'I. Primeiros Conceitos e Equipamentos', 'II. Operação Básica da Mesa de Som',
+                    'III. Conexões e Cabos', 'IV. Aprofundamento em Equalização',
+                    'V. Processamento de Áudio e Efeitos', 'VI. Aprimorando a Operação da Mesa',
+                    'VII. Operação com Segurança', 'VIII. Solução de Problemas e Criatividade'
+                ]
+            };
+
+            const stepDescriptions = {
+                teclado: [
+                    "Conhecer o instrumento, postura e noções básicas de música.",
+                    "Aprender notas, acordes básicos e ritmos simples.",
+                    "Combinar acordes, ritmos e trocas suaves.",
+                    "Entender compassos, cifras, harmonia e andamento.",
+                    "Treinar mão direita e esquerda para tocar juntas.",
+                    "Aplicar padrões rítmicos para acompanhar músicas.",
+                    "Entender escalas e campo harmônico para improviso.",
+                    "Aprender a usar inversões de acordes para variar a sonoridade e facilitar transições.",
+                    "Executar músicas completas sem interrupções.",
+                    "Transpor acordes e escalas para diferentes tonalidades.",
+                    "Reconhecer acordes e melodias sem cifra."
+                ],
+                baixo: [
+                    "Conhecer o instrumento, postura e noções básicas de música.",
+                    "Aprender notas e como conhecer padrões no braço do instrumento.",
+                    "Combinar ritmo, notas e batidas para tocar as primeiras músicas.",
+                    "Entender padrões, compassos, cifras e padrões de escala maior.",
+                    "Treinar mão direita e esquerda para tocar em sincronia.",
+                    "Aplicar diferentes padrões rítmicos para criar levadas e grooves.",
+                    "Entender escalas, arpejos e o campo harmônico.",
+                    "Usar escalas e o campo harmônico para criar linhas de baixo e improvisar.",
+                    "Executar músicas completas sem interrupções.",
+                    "Transpor acordes e escalas para diferentes tonalidades.",
+                    "Reconhecer acordes e melodias sem cifra."
+                ],
+                guitarra: [
+                    "Conhecer o instrumento, postura e noções básicas de música.",
+                    "Aprender a montar os primeiros acordes e entender suas posições no braço.",
+                    "Praticar batidas e a troca suave e fluida entre acordes básicos.",
+                    "Usar cifras e aplicar padrões rítmicos para acompanhar músicas.",
+                    "Entender escalas, arpejos e o campo harmônico.",
+                    "Aprender a usar diferentes formas de acordes para enriquecer a sonoridade e facilitar transições.",
+                    "Aplicar o campo harmônico e notas dissonantes (7ª, 9ª, etc.) para criar arranjos e solos.",
+                    "Executar músicas completas sem interrupções.",
+                    "Transpor acordes e escalas para diferentes tonalidades.",
+                    "Reconhecer acordes e melodias sem cifra."
+                ],
+                bateria: [
+                    "Conhecer o instrumento, postura e noções básicas de música.",
+                    "Tocar os primeiros ritmos e destravar a coordenação motora.",
+                    "Desenvolver a habilidade de fazer viradas usando todos os componentes da bateria.",
+                    "Dominar levadas e padrões rítmicos essenciais.",
+                    "Entender a função da bateria na banda e como tocar em sincronia com outros músicos.",
+                    "Executar ritmos no tempo e com confiança, desenvolvendo a musicalidade.",
+                    "Aplicar o conhecimento para criar viradas e variações rítmicas de forma espontânea.",
+                    "Explorar e dominar uma ampla variedade de estilos e ritmos musicais.",
+                    "Usar todo o seu conhecimento para criar seus próprios ritmos e grooves."
+                ],
+                sonorizacao: [
+                    "Conhecer o que é sonorização, seus principais componentes e suas funções básicas.",
+                    "Ligar os aparelhos, manusear os controles básicos e começar a equalização inicial.",
+                    "Aprender a fazer conexões corretas entre os aparelhos e a realizar a manutenção de cabos.",
+                    "Entender os conceitos técnicos de frequências e aprimorar a equalização de forma avançada.",
+                    "Aprimorar a operação de processadores de áudio (compressores, gates, etc.) para moldar o som.",
+                    "Treinar a audição (ouvido) para identificar e resolver problemas, como tirar microfonias.",
+                    "Executar todas as tarefas de forma segura, protegendo os equipamentos e os ouvidos dos usuários.",
+                    "Desenvolver a capacidade de diagnosticar e resolver problemas, e usar a mesa de som para criar sonoridades únicas."
+                ]
+            };
+
+
+            const tabColors = {
+                teclado: { main: 'indigo', hex: '#4f46e5' },
+                baixo: { main: 'green', hex: '#10b981' },
+                guitarra: { main: 'red', hex: '#ef4444' },
+                bateria: { main: 'orange', hex: '#f97316' },
+                sonorizacao: { main: 'purple', hex: '#a855f7' }
+            };
+            
+            function renderPath(tabName) {
+                const pathContainer = document.getElementById(`${tabName}-path`);
+                pathContainer.innerHTML = '';
+                pathContainer.classList.add('path-container');
+                pathContainer.innerHTML = `<div class="path-line hidden md:block"></div>`;
+
+                const currentStepTitles = stepTitles[tabName];
+                const currentStepDescriptions = stepDescriptions[tabName];
+                currentStepTitles.forEach((title, index) => {
+                    const stepDiv = document.createElement('div');
+                    stepDiv.className = `path-step ${tabName} mb-12 w-full md:w-1/2 relative`;
+                    
+                    const cardDiv = document.createElement('div');
+                    cardDiv.className = `path-card bg-gray-50 p-6 rounded-2xl shadow-md border border-gray-200 transition-transform hover:scale-105 duration-300 relative z-20`;
+
+                    const iconDiv = document.createElement('div');
+                    iconDiv.className = `path-icon hidden md:block`;
+                    iconDiv.textContent = title.split('.')[0];
+                    cardDiv.appendChild(iconDiv);
+
+                    const titleH3 = document.createElement('h3');
+                    titleH3.className = `text-xl font-bold mb-2`;
+                    titleH3.textContent = title;
+                    cardDiv.appendChild(titleH3);
+
+                    const descriptionP = document.createElement('p');
+                    descriptionP.className = `text-gray-600`;
+                    descriptionP.textContent = currentStepDescriptions[index];
+                    cardDiv.appendChild(descriptionP);
+
+                    const progressContainer = document.createElement('div');
+                    progressContainer.className = 'mt-4';
+
+                    const currentStudents = studentData[tabName];
+                    if (currentStudents) {
+                        for (const studentName in currentStudents) {
+                            const progress = currentStudents[studentName][index];
+                            if (progress !== undefined) {
+                                const studentProgressDiv = document.createElement('div');
+                                studentProgressDiv.className = `student-progress`;
+                                studentProgressDiv.innerHTML = `
+                                    <span class="student-progress-name">${studentName.charAt(0).toUpperCase() + studentName.slice(1)}</span>
+                                    <div class="student-progress-bar-container">
+                                        <div class="student-progress-bar-fill" style="width: ${progress}%; background-color: ${tabColors[tabName].hex};"></div>
+                                    </div>
+                                    <span class="student-progress-percentage">${progress}%</span>
+                                `;
+                                progressContainer.appendChild(studentProgressDiv);
+                            }
+                        }
+                    }
+
+                    cardDiv.appendChild(progressContainer);
+                    stepDiv.appendChild(cardDiv);
+                    pathContainer.appendChild(stepDiv);
+                });
+            }
+
+            function switchTab(tabName) {
+                tabContents.forEach(content => content.classList.add('hidden'));
+                const activeContent = document.getElementById(`${tabName}-content`);
+                if (activeContent) {
+                    activeContent.classList.remove('hidden');
+                }
+
+                tabButtons.forEach(button => {
+                    const buttonTab = button.dataset.tab;
+                    button.classList.remove('active', `${buttonTab}-active`);
+                    button.classList.add('bg-gray-200', 'text-gray-700');
+                });
+                const activeButton = document.querySelector(`.tab-button[data-tab="${tabName}"]`);
+                if (activeButton) {
+                    activeButton.classList.add('active', `${tabName}-active`);
+                    activeButton.classList.remove('bg-gray-200', 'text-gray-700');
+                }
+
+                currentTab = tabName;
+                renderPath(currentTab);
+            }
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabName = button.dataset.tab;
+                    switchTab(tabName);
+                });
+            });
+
+            // Oculta os elementos de busca
+            const searchContainer = document.querySelector('.flex.flex-col.items-center.mb-8');
+            if (searchContainer) {
+                searchContainer.remove();
+            }
+
+            switchTab('teclado');
+        });
+    </script>
+</body>
+</html>
