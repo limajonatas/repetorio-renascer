@@ -50,11 +50,11 @@
             </div>
             <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-[#FBAF00]">
                 <p id="passive-students" class="text-5xl font-bold text-[#006494]">4</p>
-                <p class="text-gray-500 mt-2">Alunos Passivos</p>
+                <p class="text-gray-500 mt-2">Alunos Inativos</p>
             </div>
             <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-[#E85D04]">
                 <p id="quit-students" class="text-5xl font-bold text-[#006494]">3</p>
-                <p class="text-gray-500 mt-2">Desistentes/Parados</p>
+                <p class="text-gray-500 mt-2">Desistentes</p>
             </div>
             <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-[#006494]">
                 <p id="total-classes-count" class="text-5xl font-bold text-[#006494]">0</p>
@@ -170,7 +170,7 @@
 
         document.getElementById('total-students-count').textContent = totalStudents;
         document.getElementById('active-students').textContent = 5;
-        document.getElementById('passive-students').textContent = 4;
+        document.getElementById('passive-students').textContent = 3;
         document.getElementById('quit-students').textContent = totalStudents - 5 - 4;
         document.getElementById('total-classes-count').textContent = totalClasses;
         document.getElementById('total-hours-count').textContent = totalHours.toFixed(1);
