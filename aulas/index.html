@@ -1,333 +1,564 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Infográfico de Aulas de Música</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f0f4f8;
-        }
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f0f4f8;
+      }
+      .chart-container {
+        position: relative;
+        width: 100%;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        height: 350px;
+        max-height: 400px;
+      }
+      @media (min-width: 768px) {
         .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 350px;
-            max-height: 400px;
+          height: 400px;
         }
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 400px;
-            }
-        }
+      }
     </style>
-</head>
-<body class="text-gray-800">
-
+  </head>
+  <body class="text-gray-800">
     <div class="container mx-auto p-4 md:p-8">
+      <header class="text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-black text-[#0582CA]">
+          Análise de Progresso Musical
+        </h1>
+        <p class="text-lg text-gray-600 mt-2">
+          Um resumo visual do engajamento e dedicação dos nossos alunos.
+        </p>
+      </header>
 
-        <header class="text-center mb-12">
-            <h1 class="text-4xl md:text-5xl font-black text-[#0582CA]">Análise de Progresso Musical</h1>
-            <p class="text-lg text-gray-600 mt-2">Um resumo visual do engajamento e dedicação dos nossos alunos.</p>
-        </header>
+      <section
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-6 mb-12 text-center"
+      >
+        <div
+          class="bg-white rounded-lg shadow-md p-6 border-l-4 border-[#006494]"
+        >
+          <p
+            id="total-students-count"
+            class="text-5xl font-bold text-[#006494]"
+          >
+            12
+          </p>
+          <p class="text-gray-500 mt-2">Total de Alunos</p>
+        </div>
+        <div
+          class="bg-white rounded-lg shadow-md p-6 border-l-4 border-[#00A6FB]"
+        >
+          <p id="active-students" class="text-5xl font-bold text-[#006494]">
+            5
+          </p>
+          <p class="text-gray-500 mt-2">Alunos Ativos</p>
+        </div>
+        <div
+          class="bg-white rounded-lg shadow-md p-6 border-l-4 border-[#FBAF00]"
+        >
+          <p id="passive-students" class="text-5xl font-bold text-[#006494]">
+            4
+          </p>
+          <p class="text-gray-500 mt-2">Alunos Inativos</p>
+        </div>
+        <div
+          class="bg-white rounded-lg shadow-md p-6 border-l-4 border-[#E85D04]"
+        >
+          <p id="quit-students" class="text-5xl font-bold text-[#006494]">3</p>
+          <p class="text-gray-500 mt-2">Desistentes</p>
+        </div>
+        <div
+          class="bg-white rounded-lg shadow-md p-6 border-l-4 border-[#006494]"
+        >
+          <p id="total-classes-count" class="text-5xl font-bold text-[#006494]">
+            0
+          </p>
+          <p class="text-gray-500 mt-2">Aulas Realizadas</p>
+        </div>
+        <div
+          class="bg-white rounded-lg shadow-md p-6 border-l-4 border-[#006494]"
+        >
+          <p id="total-hours-count" class="text-5xl font-bold text-[#006494]">
+            0
+          </p>
+          <p class="text-gray-500 mt-2">Horas de Estudo</p>
+        </div>
+        <div
+          class="bg-white rounded-lg shadow-md p-6 border-l-4 border-[#006494]"
+        >
+          <p id="avg-hours-count" class="text-5xl font-bold text-[#006494]">
+            0
+          </p>
+          <p class="text-gray-500 mt-2">Horas/Média por Aluno</p>
+        </div>
+        <div
+          class="bg-white rounded-lg shadow-md p-6 border-l-4 border-[#00A6FB]"
+        >
+          <p id="avg-hours-per-class" class="text-5xl font-bold text-[#006494]">
+            0
+          </p>
+          <p class="text-gray-500 mt-2">Hora/Aula Média</p>
+        </div>
+      </section>
 
-        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-6 mb-12 text-center">
-            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-[#006494]">
-                <p id="total-students-count" class="text-5xl font-bold text-[#006494]">12</p>
-                <p class="text-gray-500 mt-2">Total de Alunos</p>
-            </div>
-            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-[#00A6FB]">
-                <p id="active-students" class="text-5xl font-bold text-[#006494]">5</p>
-                <p class="text-gray-500 mt-2">Alunos Ativos</p>
-            </div>
-            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-[#FBAF00]">
-                <p id="passive-students" class="text-5xl font-bold text-[#006494]">4</p>
-                <p class="text-gray-500 mt-2">Alunos Inativos</p>
-            </div>
-            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-[#E85D04]">
-                <p id="quit-students" class="text-5xl font-bold text-[#006494]">3</p>
-                <p class="text-gray-500 mt-2">Desistentes</p>
-            </div>
-            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-[#006494]">
-                <p id="total-classes-count" class="text-5xl font-bold text-[#006494]">0</p>
-                <p class="text-gray-500 mt-2">Aulas Realizadas</p>
-            </div>
-            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-[#006494]">
-                <p id="total-hours-count" class="text-5xl font-bold text-[#006494]">0</p>
-                <p class="text-gray-500 mt-2">Horas de Estudo</p>
-            </div>
-            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-[#006494]">
-                <p id="avg-hours-count" class="text-5xl font-bold text-[#006494]">0</p>
-                <p class="text-gray-500 mt-2">Horas/Média por Aluno</p>
-            </div>
-            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-[#00A6FB]">
-                <p id="avg-hours-per-class" class="text-5xl font-bold text-[#006494]">0</p>
-                <p class="text-gray-500 mt-2">Hora/Aula Média</p>
-            </div>
-        </section>
+      <main class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h2 class="text-2xl font-bold text-center mb-4 text-[#006494]">
+            Distribuição de Horas
+          </h2>
+          <p class="text-center text-gray-600 mb-6">
+            Este gráfico de rosca mostra a distribuição percentual do total de
+            horas de estudo de cada aluno.
+          </p>
+          <div class="chart-container">
+            <canvas id="horasDonutChart"></canvas>
+          </div>
+        </div>
 
-        <main class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h2 class="text-2xl font-bold text-center mb-4 text-[#006494]">
+            Total de Aulas por Aluno
+          </h2>
+          <p class="text-center text-gray-600 mb-6">
+            Compara o número total de aulas (antigas + recentes) de cada aluno,
+            destacando a frequência.
+          </p>
+          <div class="chart-container h-96 md:h-[450px]">
+            <canvas id="aulasChart"></canvas>
+          </div>
+        </div>
 
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <h2 class="text-2xl font-bold text-center mb-4 text-[#006494]">Distribuição de Horas</h2>
-                 <p class="text-center text-gray-600 mb-6">Este gráfico de rosca mostra a distribuição percentual do total de horas de estudo de cada aluno.</p>
-                <div class="chart-container">
-                    <canvas id="horasDonutChart"></canvas>
-                </div>
-            </div>
+        <div class="bg-white rounded-lg shadow-md p-6 md:col-span-2">
+          <h2 class="text-2xl font-bold text-center mb-4 text-[#006494]">
+            Evolução dos 7 Alunos em Destaque
+          </h2>
+          <p class="text-center text-gray-600 mb-6">
+            Acompanhe a evolução da pontuação dos 7 alunos com mais aulas. A
+            linha contínua mostra o progresso mesmo em dias sem registro de
+            aula.
+          </p>
+          <div class="chart-container h-96 md:h-[450px]">
+            <canvas id="evolucaoChart"></canvas>
+          </div>
+        </div>
+      </main>
 
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <h2 class="text-2xl font-bold text-center mb-4 text-[#006494]">Total de Aulas por Aluno</h2>
-                 <p class="text-center text-gray-600 mb-6">Compara o número total de aulas (antigas + recentes) de cada aluno, destacando a frequência.</p>
-                <div class="chart-container h-96 md:h-[450px]">
-                    <canvas id="aulasChart"></canvas>
-                </div>
-            </div>
-            
-            <div class="bg-white rounded-lg shadow-md p-6 md:col-span-2">
-                <h2 class="text-2xl font-bold text-center mb-4 text-[#006494]">Evolução dos 7 Alunos em Destaque</h2>
-                <p class="text-center text-gray-600 mb-6">Acompanhe a evolução da pontuação dos 7 alunos com mais aulas. A linha contínua mostra o progresso mesmo em dias sem registro de aula.</p>
-                <div class="chart-container h-96 md:h-[450px]">
-                    <canvas id="evolucaoChart"></canvas>
-                </div>
-            </div>
-
-        </main>
-
-        <footer class="text-center mt-12 text-gray-500">
-            <p>Relatório gerado em 12 de agosto de 2025. Continue praticando!</p>
-        </footer>
-
+      <footer class="text-center mt-12 text-gray-500">
+        <p>Relatório gerado em 18 de setembro de 2025. Continue praticando!</p>
+      </footer>
     </div>
 
     <script>
-        const studentData = [
-            { name: 'Acácio', instrument: 'Baixo', oldClasses: 0, recentClasses: 18, recentHours: 22, oldHours: 0, timeline: [
-                { date: "11/05", evolucao: 2 }, { date: "17/05", evolucao: 7 }, { date: "24/05", evolucao: 8 },
-                { date: "25/05", evolucao: 9 }, { date: "07/06", evolucao: 9.5 }, { date: "15/06", evolucao: 10.5 },
-                { date: "22/06", evolucao: 13 }, { date: "27/06", evolucao: 15 }, { date: "04/07", evolucao: 16 },
-                { date: "11/07", evolucao: 17 }, { date: "19/07", evolucao: 18 }, { date: "21/07", evolucao: 20 },
-                { date: "24/07", evolucao: 22 }, {date: "21/08", evolucao: 23}, {date: "24/08", evolucao: 23.5}, 
-                {date: "12/09", evolucao: 25}, {date: "13/09", evolucao: 26}, {date: "15/09", evolucao: 28}
-            ]},
-            { name: 'Fábio', instrument: 'Bateria', oldClasses: 0, recentClasses: 9, recentHours: 10, oldHours: 0, timeline: [
-                { date: "11/05", evolucao: 5 }, { date: "25/05", evolucao: 8 }, { date: "22/06", evolucao: 13 },
-                { date: "27/06", evolucao: 15 }, { date: "04/07", evolucao: 18 }, { date: "11/07", evolucao: 19 },
-                { date: "19/07", evolucao: 19.5 }, {date: "24/08", evolucao: 20},{date: "13/09", evolucao: 21}
-            ]},
-            { name: 'Rian', instrument: 'Teclado', oldClasses: 3, recentClasses: 8, recentHours: 11, oldHours: 3, timeline: [
-                { date: "10/05", evolucao: 2.5 }, { date: "17/05", evolucao: 3 }, { date: "25/05", evolucao: 4 },
-                { date: "27/06", evolucao: 8 }, { date: "02/08", evolucao: 9.5 }, { date: "05/08", evolucao: 11 }, 
-                {date: "23/08", evolucao: 13}, {date: "24/08", evolucao: 14}
-            ]},
-            { name: 'Leonardo', instrument: 'Baixo', oldClasses: 0, recentClasses: 11, recentHours: 13.5, oldHours: 0, timeline: [
-                { date: "25/05", evolucao: 0.5 }, { date: "07/06", evolucao: 1 }, { date: "15/06", evolucao: 1.5 },
-                { date: "22/06", evolucao: 1.6 }, { date: "27/06", evolucao: 3 }, { date: "22/07", evolucao: 5 },
-                { date: "26/07", evolucao: 5.5 }, { date: "02/08", evolucao: 6 }, { date: "05/08", evolucao: 8 }, 
-                {date: "23/08", evolucao: 10}, {date: "24/08", evolucao: 11}
-            ]},
-            { name: 'Wesley', instrument: 'Bateria', oldClasses: 3, recentClasses: 5, recentHours: 8.5, oldHours: 3, timeline: [
-                { date: "24/05", evolucao: 12 }, { date: "25/05", evolucao: 14 }, { date: "05/07", evolucao: 15 }, 
-                {date: "23/08", evolucao: 16}, {date: "15/09", evolucao: 17.5}
-            ]},
-            { name: 'Thiago', instrument: 'Guitarra', oldClasses: 0, recentClasses: 5, recentHours: 6.5, oldHours: 0, timeline: [
-                { date: "25/05", evolucao: 0.5 }, { date: "27/06", evolucao: 1.5 }, { date: "24/07", evolucao: 2.5 },
-                { date: "05/08", evolucao: 4 }, {date: "22/08", evolucao: 6}
-            ]},
-            { name: 'Raniely', instrument: 'Teclado', oldClasses: 2, recentClasses: 3, recentHours: 3, oldHours: 2, timeline: [
-                { date: "31/05", evolucao: 1.5 }, { date: "07/06", evolucao: 1.6 }, { date: "22/06", evolucao: 1.7 }
-            ]},
-            { name: 'Raniel', instrument: 'Bateria', oldClasses: 2, recentClasses: 1, recentHours: 1, oldHours: 2, timeline: [
-                { date: "31/05", evolucao: 81 }
-            ]},
-            { name: 'Felipe', instrument: 'Teclado', oldClasses: 3, recentClasses: 0, recentHours: 0, oldHours: 3, timeline: [] },
-            { name: 'Ilma', instrument: 'Guitarra', oldClasses: 1, recentClasses: 0, recentHours: 0, oldHours: 1, timeline: [] },
-            { name: 'Neia', instrument: 'Teclado', oldClasses: 2, recentClasses: 0, recentHours: 0, oldHours: 2, timeline: [] },
-            { name: 'Rhailla', instrument: 'Teclado', oldClasses: 2, recentClasses: 0, recentHours: 0, oldHours: 2, timeline: [] }
-        ];
+      const studentData = [
+        {
+          name: "Acácio",
+          instrument: "Baixo",
+          oldClasses: 0,
+          recentClasses: 18,
+          recentHours: 22,
+          oldHours: 0,
+          timeline: [
+            { date: "11/05", evolucao: 2 },
+            { date: "17/05", evolucao: 7 },
+            { date: "24/05", evolucao: 8 },
+            { date: "25/05", evolucao: 9 },
+            { date: "07/06", evolucao: 9.5 },
+            { date: "15/06", evolucao: 10.5 },
+            { date: "22/06", evolucao: 13 },
+            { date: "27/06", evolucao: 15 },
+            { date: "04/07", evolucao: 16 },
+            { date: "11/07", evolucao: 17 },
+            { date: "19/07", evolucao: 18 },
+            { date: "21/07", evolucao: 20 },
+            { date: "24/07", evolucao: 22 },
+            { date: "21/08", evolucao: 23 },
+            { date: "24/08", evolucao: 23.5 },
+            { date: "12/09", evolucao: 25 },
+            { date: "13/09", evolucao: 26 },
+            { date: "15/09", evolucao: 28 },
+          ],
+        },
+        {
+          name: "Fábio",
+          instrument: "Bateria",
+          oldClasses: 0,
+          recentClasses: 9,
+          recentHours: 10,
+          oldHours: 0,
+          timeline: [
+            { date: "11/05", evolucao: 5 },
+            { date: "25/05", evolucao: 8 },
+            { date: "22/06", evolucao: 13 },
+            { date: "27/06", evolucao: 15 },
+            { date: "04/07", evolucao: 18 },
+            { date: "11/07", evolucao: 19 },
+            { date: "19/07", evolucao: 19.5 },
+            { date: "24/08", evolucao: 20 },
+            { date: "13/09", evolucao: 21 },
+          ],
+        },
+        {
+          name: "Rian",
+          instrument: "Teclado",
+          oldClasses: 3,
+          recentClasses: 8,
+          recentHours: 11,
+          oldHours: 3,
+          timeline: [
+            { date: "10/05", evolucao: 2.5 },
+            { date: "17/05", evolucao: 3 },
+            { date: "25/05", evolucao: 4 },
+            { date: "27/06", evolucao: 8 },
+            { date: "02/08", evolucao: 9.5 },
+            { date: "05/08", evolucao: 11 },
+            { date: "23/08", evolucao: 13 },
+            { date: "24/08", evolucao: 14 },
+          ],
+        },
+        {
+          name: "Leonardo",
+          instrument: "Baixo",
+          oldClasses: 0,
+          recentClasses: 11,
+          recentHours: 13.5,
+          oldHours: 0,
+          timeline: [
+            { date: "25/05", evolucao: 0.5 },
+            { date: "07/06", evolucao: 1 },
+            { date: "15/06", evolucao: 1.5 },
+            { date: "22/06", evolucao: 1.6 },
+            { date: "27/06", evolucao: 3 },
+            { date: "22/07", evolucao: 5 },
+            { date: "26/07", evolucao: 5.5 },
+            { date: "02/08", evolucao: 6 },
+            { date: "05/08", evolucao: 8 },
+            { date: "23/08", evolucao: 10 },
+            { date: "24/08", evolucao: 11 },
+          ],
+        },
+        {
+          name: "Wesley",
+          instrument: "Bateria",
+          oldClasses: 3,
+          recentClasses: 5,
+          recentHours: 8.5,
+          oldHours: 3,
+          timeline: [
+            { date: "24/05", evolucao: 12 },
+            { date: "25/05", evolucao: 14 },
+            { date: "05/07", evolucao: 15 },
+            { date: "23/08", evolucao: 16 },
+            { date: "15/09", evolucao: 17.5 },
+          ],
+        },
+        {
+          name: "Thiago",
+          instrument: "Guitarra",
+          oldClasses: 0,
+          recentClasses: 5,
+          recentHours: 6.5,
+          oldHours: 0,
+          timeline: [
+            { date: "25/05", evolucao: 0.5 },
+            { date: "27/06", evolucao: 1.5 },
+            { date: "24/07", evolucao: 2.5 },
+            { date: "05/08", evolucao: 4 },
+            { date: "22/08", evolucao: 6 },
+          ],
+        },
+        {
+          name: "Raniely",
+          instrument: "Teclado",
+          oldClasses: 2,
+          recentClasses: 3,
+          recentHours: 3,
+          oldHours: 2,
+          timeline: [
+            { date: "31/05", evolucao: 1.5 },
+            { date: "07/06", evolucao: 1.6 },
+            { date: "22/06", evolucao: 1.7 },
+          ],
+        },
+        {
+          name: "Raniel",
+          instrument: "Bateria",
+          oldClasses: 2,
+          recentClasses: 1,
+          recentHours: 1,
+          oldHours: 2,
+          timeline: [{ date: "31/05", evolucao: 81 }],
+        },
+        {
+          name: "Felipe",
+          instrument: "Teclado",
+          oldClasses: 3,
+          recentClasses: 0,
+          recentHours: 0,
+          oldHours: 3,
+          timeline: [],
+        },
+        {
+          name: "Ilma",
+          instrument: "Guitarra",
+          oldClasses: 1,
+          recentClasses: 0,
+          recentHours: 0,
+          oldHours: 1,
+          timeline: [],
+        },
+        {
+          name: "Neia",
+          instrument: "Teclado",
+          oldClasses: 2,
+          recentClasses: 0,
+          recentHours: 0,
+          oldHours: 2,
+          timeline: [],
+        },
+        {
+          name: "Rhailla",
+          instrument: "Teclado",
+          oldClasses: 2,
+          recentClasses: 0,
+          recentHours: 0,
+          oldHours: 2,
+          timeline: [],
+        },
+      ];
 
-        const instrumentEmojis = {
-            'Teclado': '🎹',
-            'Baixo': '🎸',
-            'Bateria': '🥁',
-            'Guitarra': '🎸',
-            'Sonorização': '🎛️'
-        };
+      const instrumentEmojis = {
+        Teclado: "🎹",
+        Baixo: "🎸",
+        Bateria: "🥁",
+        Guitarra: "🎸",
+        Sonorização: "🎛️",
+      };
 
-        const allStudents = studentData;
-        const sortedByClasses = [...allStudents].sort((a, b) => (b.oldClasses + b.recentClasses) - (a.oldClasses + a.recentClasses));
-        const sortedByHours = [...allStudents].sort((a, b) => (b.recentHours + b.oldHours) - (a.recentHours + a.oldHours));
+      const allStudents = studentData;
+      const sortedByClasses = [...allStudents].sort(
+        (a, b) =>
+          b.oldClasses + b.recentClasses - (a.oldClasses + a.recentClasses)
+      );
+      const sortedByHours = [...allStudents].sort(
+        (a, b) => b.recentHours + b.oldHours - (a.recentHours + a.oldHours)
+      );
 
-        const totalStudents = allStudents.length;
-        const totalClasses = allStudents.reduce((sum, s) => sum + s.oldClasses + s.recentClasses, 0);
-        const totalHours = allStudents.reduce((sum, s) => sum + s.oldHours + s.recentHours, 0);
-        const avgHours = (totalHours / totalStudents).toFixed(1);
-        const avgHoursPerClass = (totalHours / totalClasses).toFixed(1);
+      const totalStudents = allStudents.length;
+      const totalClasses = allStudents.reduce(
+        (sum, s) => sum + s.oldClasses + s.recentClasses,
+        0
+      );
+      const totalHours = allStudents.reduce(
+        (sum, s) => sum + s.oldHours + s.recentHours,
+        0
+      );
+      const avgHours = (totalHours / totalStudents).toFixed(1);
+      const avgHoursPerClass = (totalHours / totalClasses).toFixed(1);
 
-        document.getElementById('total-students-count').textContent = totalStudents;
-        document.getElementById('active-students').textContent = 5;
-        document.getElementById('passive-students').textContent = 3;
-        document.getElementById('quit-students').textContent = totalStudents - 5 - 4;
-        document.getElementById('total-classes-count').textContent = totalClasses;
-        document.getElementById('total-hours-count').textContent = totalHours.toFixed(1);
-        document.getElementById('avg-hours-count').textContent = avgHours;
-        document.getElementById('avg-hours-per-class').textContent = avgHoursPerClass;
-        
-        const colors = {
-            blue: '#00A6FB',
-            darkBlue: '#0582CA',
-            darkestBlue: '#006494',
-            yellow: '#FBAF00',
-            orange: '#E85D04'
-        };
-        
-        const chartColors = [colors.blue, colors.yellow, colors.orange, colors.darkBlue, '#FAA307', '#D00000', '#003F88', '#F48C06', '#E9C46A', '#2A9D8F', '#F4A261', '#E76F51'];
+      document.getElementById("total-students-count").textContent =
+        totalStudents;
+      document.getElementById("active-students").textContent = 5;
+      document.getElementById("passive-students").textContent = 3;
+      document.getElementById("quit-students").textContent =
+        totalStudents - 5 - 4;
+      document.getElementById("total-classes-count").textContent = totalClasses;
+      document.getElementById("total-hours-count").textContent =
+        totalHours.toFixed(1);
+      document.getElementById("avg-hours-count").textContent = avgHours;
+      document.getElementById("avg-hours-per-class").textContent =
+        avgHoursPerClass;
 
-        const tooltipTitleCallback = (tooltipItems) => {
-            const item = tooltipItems[0];
-            let label = item.chart.data.labels[item.dataIndex];
-            if (Array.isArray(label)) {
-                return label.join(' ');
-            }
-            return label;
-        };
+      const colors = {
+        blue: "#00A6FB",
+        darkBlue: "#0582CA",
+        darkestBlue: "#006494",
+        yellow: "#FBAF00",
+        orange: "#E85D04",
+      };
 
-        const commonChartOptions = {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    labels: {
-                        color: '#374151'
-                    }
-                },
-                tooltip: {
-                    callbacks: {
-                        title: tooltipTitleCallback
-                    }
-                }
+      const chartColors = [
+        colors.blue,
+        colors.yellow,
+        colors.orange,
+        colors.darkBlue,
+        "#FAA307",
+        "#D00000",
+        "#003F88",
+        "#F48C06",
+        "#E9C46A",
+        "#2A9D8F",
+        "#F4A261",
+        "#E76F51",
+      ];
+
+      const tooltipTitleCallback = (tooltipItems) => {
+        const item = tooltipItems[0];
+        let label = item.chart.data.labels[item.dataIndex];
+        if (Array.isArray(label)) {
+          return label.join(" ");
+        }
+        return label;
+      };
+
+      const commonChartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            labels: {
+              color: "#374151",
             },
-            scales: {
-                y: {
-                    ticks: { color: '#374151' },
-                    grid: { color: '#e5e7eb' }
-                },
-                x: {
-                    ticks: { color: '#374151' },
-                    grid: { display: false }
-                }
-            }
+          },
+          tooltip: {
+            callbacks: {
+              title: tooltipTitleCallback,
+            },
+          },
+        },
+        scales: {
+          y: {
+            ticks: { color: "#374151" },
+            grid: { color: "#e5e7eb" },
+          },
+          x: {
+            ticks: { color: "#374151" },
+            grid: { display: false },
+          },
+        },
+      };
+
+      const sortedNamesByHours = sortedByHours.map(
+        (s) => `${s.name} ${instrumentEmojis[s.instrument] || ""}`
+      );
+      const sortedHours = sortedByHours.map((s) => s.recentHours + s.oldHours);
+
+      const horasDonutCtx = document
+        .getElementById("horasDonutChart")
+        .getContext("2d");
+      new Chart(horasDonutCtx, {
+        type: "doughnut",
+        data: {
+          labels: sortedNamesByHours,
+          datasets: [
+            {
+              label: "Distribuição de Horas",
+              data: sortedHours,
+              backgroundColor: chartColors,
+              hoverOffset: 4,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: "top",
+              labels: { color: "#374151" },
+            },
+            tooltip: {
+              callbacks: {
+                title: tooltipTitleCallback,
+              },
+            },
+          },
+        },
+      });
+
+      const sortedNamesByClasses = sortedByClasses.map(
+        (s) => `${s.name} ${instrumentEmojis[s.instrument] || ""}`
+      );
+      const sortedTotalClasses = sortedByClasses.map(
+        (s) => s.oldClasses + s.recentClasses
+      );
+
+      const aulasChartCtx = document
+        .getElementById("aulasChart")
+        .getContext("2d");
+      new Chart(aulasChartCtx, {
+        type: "bar",
+        data: {
+          labels: sortedNamesByClasses,
+          datasets: [
+            {
+              label: "Total de Aulas",
+              data: sortedTotalClasses,
+              backgroundColor: chartColors,
+              borderColor: chartColors.map((c) => c + "B3"),
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: { ...commonChartOptions, indexAxis: "y" },
+      });
+
+      const topStudents = sortedByClasses.slice(0, 7);
+      const allDates = [
+        ...new Set(studentData.flatMap((s) => s.timeline.map((t) => t.date))),
+      ].sort((a, b) => {
+        const dateA = new Date(a.split("/").reverse().join("-"));
+        const dateB = new Date(b.split("/").reverse().join("-"));
+        return dateA - dateB;
+      });
+
+      const evolucaoDatasets = topStudents.map((student, index) => {
+        let lastEvolucao = 0;
+        const dataPoints = allDates.map((date) => {
+          const entry = student.timeline.find((t) => t.date === date);
+          if (entry) {
+            lastEvolucao = entry.evolucao;
+          }
+          return lastEvolucao;
+        });
+        return {
+          label: `${student.name} ${
+            instrumentEmojis[student.instrument] || ""
+          }`,
+          data: dataPoints,
+          borderColor: chartColors[index],
+          backgroundColor: chartColors[index] + "33",
+          fill: false,
+          tension: 0.1,
         };
+      });
 
-        const sortedNamesByHours = sortedByHours.map(s => `${s.name} ${instrumentEmojis[s.instrument] || ''}`);
-        const sortedHours = sortedByHours.map(s => s.recentHours + s.oldHours);
-
-        const horasDonutCtx = document.getElementById('horasDonutChart').getContext('2d');
-        new Chart(horasDonutCtx, {
-            type: 'doughnut',
-            data: {
-                labels: sortedNamesByHours,
-                datasets: [{
-                    label: 'Distribuição de Horas',
-                    data: sortedHours,
-                    backgroundColor: chartColors,
-                    hoverOffset: 4
-                }]
+      const evolucaoCtx = document
+        .getElementById("evolucaoChart")
+        .getContext("2d");
+      new Chart(evolucaoCtx, {
+        type: "line",
+        data: {
+          labels: allDates,
+          datasets: evolucaoDatasets,
+        },
+        options: {
+          ...commonChartOptions,
+          scales: {
+            x: {
+              ticks: { color: "#374151", maxRotation: 45, minRotation: 45 },
+              grid: { display: false },
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                        labels: { color: '#374151' }
-                    },
-                    tooltip: {
-                        callbacks: {
-                            title: tooltipTitleCallback
-                        }
-                    }
-                }
-            }
-        });
-        
-        const sortedNamesByClasses = sortedByClasses.map(s => `${s.name} ${instrumentEmojis[s.instrument] || ''}`);
-        const sortedTotalClasses = sortedByClasses.map(s => s.oldClasses + s.recentClasses);
-
-        const aulasChartCtx = document.getElementById('aulasChart').getContext('2d');
-        new Chart(aulasChartCtx, {
-            type: 'bar',
-            data: {
-                labels: sortedNamesByClasses,
-                datasets: [{
-                    label: 'Total de Aulas',
-                    data: sortedTotalClasses,
-                    backgroundColor: chartColors,
-                    borderColor: chartColors.map(c => c + 'B3'),
-                    borderWidth: 1
-                }]
+            y: {
+              beginAtZero: true,
+              ticks: { color: "#374151" },
+              grid: { color: "#e5e7eb" },
             },
-            options: { ...commonChartOptions, indexAxis: 'y' }
-        });
-
-        const topStudents = sortedByClasses.slice(0, 7);
-        const allDates = [...new Set(studentData.flatMap(s => s.timeline.map(t => t.date)))].sort((a, b) => {
-            const dateA = new Date(a.split('/').reverse().join('-'));
-            const dateB = new Date(b.split('/').reverse().join('-'));
-            return dateA - dateB;
-        });
-
-        const evolucaoDatasets = topStudents.map((student, index) => {
-            let lastEvolucao = 0;
-            const dataPoints = allDates.map(date => {
-                const entry = student.timeline.find(t => t.date === date);
-                if (entry) {
-                    lastEvolucao = entry.evolucao;
-                }
-                return lastEvolucao;
-            });
-            return {
-                label: `${student.name} ${instrumentEmojis[student.instrument] || ''}`,
-                data: dataPoints,
-                borderColor: chartColors[index],
-                backgroundColor: chartColors[index] + '33',
-                fill: false,
-                tension: 0.1
-            };
-        });
-
-        const evolucaoCtx = document.getElementById('evolucaoChart').getContext('2d');
-        new Chart(evolucaoCtx, {
-            type: 'line',
-            data: {
-                labels: allDates,
-                datasets: evolucaoDatasets
-            },
-            options: {
-                ...commonChartOptions,
-                 scales: {
-                    x: {
-                        ticks: { color: '#374151', maxRotation: 45, minRotation: 45 },
-                        grid: { display: false }
-                    },
-                    y: {
-                        beginAtZero: true,
-                        ticks: { color: '#374151' },
-                        grid: { color: '#e5e7eb' }
-                    }
-                }
-            }
-        });
-
+          },
+        },
+      });
     </script>
-</body>
+  </body>
 </html>
-
